@@ -12,6 +12,7 @@
 		FC70DF372B33B0C700CE199B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC70DF362B33B0C700CE199B /* Assets.xcassets */; };
 		FC70DF3B2B33B0C700CE199B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC70DF3A2B33B0C700CE199B /* Preview Assets.xcassets */; };
 		FC70DF432B33B36700CE199B /* DylKit in Frameworks */ = {isa = PBXBuildFile; productRef = FC70DF422B33B36700CE199B /* DylKit */; };
+		FC8A75282B33C9C8003194E4 /* WebViewKit in Frameworks */ = {isa = PBXBuildFile; productRef = FC8A75272B33C9C8003194E4 /* WebViewKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC70DF432B33B36700CE199B /* DylKit in Frameworks */,
+				FC8A75282B33C9C8003194E4 /* WebViewKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +91,7 @@
 			name = Tracker;
 			packageProductDependencies = (
 				FC70DF422B33B36700CE199B /* DylKit */,
+				FC8A75272B33C9C8003194E4 /* WebViewKit */,
 			);
 			productName = Tracker;
 			productReference = FC70DF2F2B33B0C500CE199B /* Tracker.app */;
@@ -120,6 +123,7 @@
 			mainGroup = FC70DF262B33B0C400CE199B;
 			packageReferences = (
 				FC70DF412B33B36700CE199B /* XCLocalSwiftPackageReference "../DylKit" */,
+				FC8A75262B33C9C8003194E4 /* XCRemoteSwiftPackageReference "WebViewKit" */,
 			);
 			productRefGroup = FC70DF302B33B0C500CE199B /* Products */;
 			projectDirPath = "";
@@ -375,10 +379,26 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		FC8A75262B33C9C8003194E4 /* XCRemoteSwiftPackageReference "WebViewKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielsaidi/WebViewKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		FC70DF422B33B36700CE199B /* DylKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DylKit;
+		};
+		FC8A75272B33C9C8003194E4 /* WebViewKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FC8A75262B33C9C8003194E4 /* XCRemoteSwiftPackageReference "WebViewKit" */;
+			productName = WebViewKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

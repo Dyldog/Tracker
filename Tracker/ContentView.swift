@@ -8,10 +8,12 @@
 import SwiftUI
 import Combine
 import DylKit
+import WebViewKit
 
 enum Status: String, Codable {
     case vip
     case member
+    case trusted
 }
 struct Torrent: Codable, Identifiable {
     let id: String
@@ -21,13 +23,14 @@ struct Torrent: Codable, Identifiable {
     let info_hash: String
     let status: Status
     let size: String
+    let imdb: String
     
     var ratio: CGFloat {
         guard let seeders = Float(seeders), let leechers = Float(leechers) else { return 0 }
         return CGFloat(seeders / leechers)
     }
     
-    var isVIP: Bool { status == .vip }
+    var isVIP: Bool { [.vip, .trusted].contains(status) }
     
     var fileSize: String {
         guard let size = Float(size) else { return "???" }
@@ -47,6 +50,11 @@ struct Torrent: Codable, Identifiable {
         let gigabytes = megabytes / 1024.0
         
         return String(format: "%.2f Gb", gigabytes)
+    }
+    
+    var imdbURL: URL? {
+        guard !imdb.isEmpty else { return nil }
+        return .init(string: "https://www.imdb.com/title/\(imdb)/")
     }
 }
 
@@ -76,7 +84,7 @@ final class ContentViewModel: ObservableObject {
                     
                     self.torrents = try JSONDecoder().decode([Torrent].self, from: data)
                         .filter { $0.id != "0" }
-                        .sorted(by: { $0.ratio > $1.ratio })
+//                        .sorted(by: { $0.ratio > $1.ratio })
                 } catch {
                     print(error.localizedDescription)
                     print(data.string ?? "NO DATA")
@@ -93,6 +101,7 @@ final class ContentViewModel: ObservableObject {
 
 struct ContentView: View {
     @StateObject var viewModel: ContentViewModel = .init()
+    @State var webViewURL: URL?
     
     var body: some View {
         VStack(spacing: 0) {
@@ -115,6 +124,14 @@ struct ContentView: View {
                     VStack(spacing: 0) {
                         ForEach(enumerated: viewModel.torrents) { index, torrent in
                             HStack {
+                                if let imdbURL = torrent.imdbURL {
+                                    Button {
+                                        webViewURL = imdbURL
+                                    } label: {
+                                        Image(systemName: "film")
+                                    }
+                                    .buttonStyle(.plain)
+                                }
                                 Button {
                                     viewModel.torrentTapped(torrent)
                                 } label: {
@@ -154,9 +171,17 @@ struct ContentView: View {
         .background(.black)
         .font(.title2)
         .bold()
+        .sheet(item: $webViewURL) { url in
+            WebView(url: url)
+                .frame(minHeight: 500)
+        }
     }
 }
 
 #Preview {
     ContentView()
+}
+
+extension URL: Identifiable {
+    public var id: String { absoluteString }
 }
