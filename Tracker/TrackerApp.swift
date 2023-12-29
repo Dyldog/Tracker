@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DylKit
 
 @main
 struct TrackerApp: App {
@@ -13,7 +14,11 @@ struct TrackerApp: App {
         WindowGroup {
             ContentView()
         }
-        .windowResizability(.contentMinSize)
+//        .if #available(iOS 17.0, *) {
+//            windowResizability(.contentMinSize)
+//        } else {
+//            // Fallback on earlier versions
+//        }
 //        .fixedSize(horizontal: true, vertical: false)
     }
 }

@@ -123,41 +123,46 @@ struct ContentView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         ForEach(enumerated: viewModel.torrents) { index, torrent in
-                            HStack {
-                                if let imdbURL = torrent.imdbURL {
+                            Stack(axis: .horizontal) {
+                                HStack {
+                                    if let imdbURL = torrent.imdbURL {
+                                        Button {
+                                            webViewURL = imdbURL
+                                        } label: {
+                                            Image(systemName: "film")
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
                                     Button {
-                                        webViewURL = imdbURL
+                                        viewModel.torrentTapped(torrent)
                                     } label: {
-                                        Image(systemName: "film")
+                                        Text(torrent.name)
                                     }
                                     .buttonStyle(.plain)
                                 }
-                                Button {
-                                    viewModel.torrentTapped(torrent)
-                                } label: {
-                                    Text(torrent.name)
-                                }
-                                .buttonStyle(.plain)
-                                
-                                if torrent.isVIP {
-                                    Image(systemName: "checkmark")
-                                }
-                                
-                                Text("(\(torrent.fileSize))")
-                                
-                                Spacer()
                                 
                                 HStack {
-                                    HStack(spacing: 2) {
-                                        Image(systemName: "arrow.up")
-                                        Text(torrent.seeders)
+                                    if torrent.isVIP {
+                                        Image(systemName: "checkmark")
                                     }
                                     
-                                    HStack(spacing: 2) {
-                                        Image(systemName: "arrow.down")
-                                        Text(torrent.leechers)
+                                    Text("(\(torrent.fileSize))")
+                                    
+                                    Spacer()
+                                    
+                                    HStack {
+                                        HStack(spacing: 2) {
+                                            Image(systemName: "arrow.up")
+                                            Text(torrent.seeders)
+                                        }
+                                        
+                                        HStack(spacing: 2) {
+                                            Image(systemName: "arrow.down")
+                                            Text(torrent.leechers)
+                                        }
                                     }
                                 }
+                                
                             }
                             .padding(5)
                             .foregroundStyle(Color.rainbowColors[looping: index])
@@ -169,8 +174,7 @@ struct ContentView: View {
             Spacer()
         }
         .background(.black)
-        .font(.title2)
-        .bold()
+        .font(.title2.bold())
         .sheet(item: $webViewURL) { url in
             WebView(url: url)
                 .frame(minHeight: 500)
